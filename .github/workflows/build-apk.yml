@@ -1,0 +1,39 @@
+
+name: WorldAtlas APK Build
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'WorldAtlas-v0.3.0.zip'
+      - '.github/workflows/build-apk.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 获取源码
+        uses: actions/checkout@v4
+
+      - name: 安装 Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: 安装 Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
+      - name: 解压源码
+        run: unzip -q WorldAtlas-v0.3.0.zip
+
+      - name: 编译 APK
+        run: gradle -p wa_build --no-daemon assembleDebug
+
+      - name: 保存 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorldAtlas-APK
+          path: wa_build/app/build/outputs/apk/debug/app-debug.apk
