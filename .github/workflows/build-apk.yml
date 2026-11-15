@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'WorldAtlas-v0.3.0.zip'
+      - 'WorldAtlas-v0.3.3-source.zip'
       - '.github/workflows/build-apk.yml'
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
           gradle-version: '8.13'
 
       - name: 解压源码
-        run: unzip -q WorldAtlas-v0.3.0.zip
+        run: unzip -q WorldAtlas-v0.3.3-source.zip
 
       - name: 编译 APK
         run: gradle -p wa_build --no-daemon assembleDebug
